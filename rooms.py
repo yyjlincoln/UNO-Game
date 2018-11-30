@@ -7,11 +7,14 @@ ROOMS={}
 class room(object):
     def __init__(self,rid):
         global ROOMS
+        if rid in ROOMS:
+            raise RoomAlreadyExistError('This rid has already exists.')
         ROOMS[rid]=self
         self.cards={}
         self.lastCard=None
         self.rid=rid
         self.cards_not_used=[x for x in CARDS]
+        self.players={}
     
     def allCards(self):
         return self.cards
