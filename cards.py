@@ -1,30 +1,20 @@
 import definecards
+import rooms
 from definecards import CARDS, COLOURS, TYPES
-from room import ROOMS
+from defineerrors import *
 
 CARDS_USING = {}
 
-class RoomDoesnotExistError(Exception):
-    # Room does not exist
-    pass
-
-class CardDefineError(Exception):
-    # CardDefinerror
-    pass
-
-
-class CardInUseError(Exception):
-    # This card is already in use.
-    pass
 
 class card(object): #Given card, in another word, card in use.
-    def __init__(self, cid, cowner, croomid):
-        if croomid not in ROOMS:
-            raise RoomDoesnotExistError('Room id: '+croomid+' does not exist.')
-        if cid in ROOMS[croomid].cards:
+    def __init__(self, cid, cowner, croom):
+        'croom accepts room object or croomid(str)'
+        croom=rooms.getRoom(croom)
+        croomid=croom.rid
+        if cid in croom.cards:
             raise CardInUseError('Card cid: '+cid+' already in use.')
         else:
-            ROOMS[croomid].cards[cid]=self
+            croom.cards[cid]=self
         self.cid = cid
         cidsplit = list(cid)
         if len(cidsplit) != 3:
@@ -42,17 +32,20 @@ class card(object): #Given card, in another word, card in use.
             self.cdiscription = CARDS[cid]
             self.cowner = cowner
             self.croomid = croomid
+            self.croom = croom
         except Exception as e:
             raise CardDefineError('Error while defining card cid: '+str(cid)+' :'+str(e))
+        croom.cards_not_used.remove(cid)
 
     def destroy(self):
         'Destroy'
-        del(ROOMS[self.croomid].cards[self.cid])
+        self.croom.cards_not_used.append(self.cid)
+        del(self.croom.cards[self.cid])
         del(self)
 
     def play(self):
         'User play this card.'
-        ROOMS.lastCard=self.cid
+        self.croom.lastCard=self.cid
         self.destroy()
 
 
