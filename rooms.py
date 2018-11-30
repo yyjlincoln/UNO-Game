@@ -22,7 +22,7 @@ class room(object):
         self.nextPlayer={}
         self.currentPlayer={}
         self.skipCount=0
-        self.currentNumber=None
+        self.currentType=None
     
     def allCards(self):
         return list(self.cards.keys())

@@ -35,9 +35,11 @@ class player(object):
     
     def play(self,cid):
         if cid in self.cards:
-            if self.proom.currentColour=='Any' or self.proom.currentColour==self.cards[cid].ccolour or self.proom.currentNumber==self.cards[cid].cnumber:
+            if self.proom.currentColour=='Any' or self.proom.currentColour==self.cards[cid].ccolour or self.proom.currentType==self.cards[cid].ctype:
                 self.cards[cid].play()
                 return cid
+            # print(self.proom.currentColour,self.cards[cid].ccolour)
+            
         return False
 
 

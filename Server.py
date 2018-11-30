@@ -27,25 +27,29 @@ def main():
     player_one.join(lounge)
     player_two.join(lounge)
     player_three.join(lounge)
-    randomCard(lounge,'Lincoln',10)
+    randomCard(lounge,'Lincoln',3)
     randomCard(lounge,'David',10)
     randomCard(lounge,'Sunny',10)
-    while 'lounge' in globals():
-        for x in lounge.players:
-            print('Now',x.pid,'is playing...')
-            print('You have',len(x.cards),'cards:')
-            print(x.cards)
-            y=x.play(input('>'))
-            while y==False:
-                print('Invalid play, please retry!')
-                y=x.play(input('>'))
-            colour,ctype,number,discription=analyseCard(y)
-
-
-    #[TODO] Auto Generate
     lounge.lastCard = None
     lounge.currentColour = 'Blue'
     lounge.plusCount = 0
+    try:
+        while lounge:
+            for x in lounge.players:
+                x=lounge.players[x]
+                print('Now',x.pid,'is playing...')
+                print('You have',len(x.allCards()),'cards:')
+                print(x.allCards())
+                y=x.play(input('>'))
+                while y==False:
+                    print('Invalid play, please retry!')
+                    y=x.play(input('>'))
+                colour,ctype,number,discription=analyseCard(y)
+                print(colour,discription)
+    except NameError:
+        print('Game Ended')
+
+    #[TODO] Auto Generate
 
 if __name__=='__main__':
     main()
