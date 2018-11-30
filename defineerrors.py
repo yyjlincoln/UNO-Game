@@ -14,6 +14,9 @@ class PlayerAlreadyExistError(Exception):
     # Room already exists
     pass
 
+class PlayerNotInRoomError(Exception):
+    pass
+
 class CardDefineError(Exception):
     # CardDefinerror
     pass

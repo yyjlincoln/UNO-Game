@@ -1,5 +1,6 @@
 import definecards
 import rooms
+import players
 from definecards import CARDS, COLOURS, TYPES
 from defineerrors import *
 
@@ -10,14 +11,22 @@ class card(object):  # Given card, in another word, card in use.
     def __init__(self, cid, cowner, croom):
         'croom accepts room object or croomid(str)'
         croom = rooms.getRoom(croom)
+        cowner = players.getPlayer(cowner)
         croomid = croom.rid
         if cid in croom.cards:
             raise CardInUseError('Card cid: '+cid+' already in use.')
         else:
             croom.cards[cid] = self
+            cowner.cards[cid]=self
+        if cowner.proom == None or cowner.proom.rid!=croom.rid:
+            if cowner.proom==None:
+                raise PlayerNotInRoomError('Player pid '+cowner.pid+' is not in any rome but the current room is rid '+croom.rid)
+            else:                
+                raise PlayerNotInRoomError('Player pid '+cowner.pid+' is in room rid '+cowner.proom.rid+' but the current room is rid '+croom.rid)
         self.cid = cid
         self.ccolour, self.ctype, self.cnumber, self.cdiscription = analyseCard(cid)
         self.cowner = cowner
+        self.cownerid = cowner.pid
         self.croomid = croomid
         self.croom = croom
         croom.cards_not_used.remove(cid)
@@ -26,6 +35,7 @@ class card(object):  # Given card, in another word, card in use.
         'Destroy'
         self.croom.cards_not_used.append(self.cid)
         del(self.croom.cards[self.cid])
+        del(self.cowner.cards[self.cid])
         del(self)
 
     def play(self):
