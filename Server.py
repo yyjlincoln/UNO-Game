@@ -10,7 +10,7 @@ def giveCard(whichRoom,whichPlayer,whichCardID):
 def randomCard(whichRoom,whichPlayer,howMuch):
     if len(whichRoom.cards_not_used)<howMuch:
         howMuch=len(whichRoom.cards_not_used)
-        print('没牌了')
+        print('Not enough cards')
     reply=[]
     for x in range(howMuch):
         ran=randint(-1,len(whichRoom.cards_not_used)-1)
@@ -27,10 +27,16 @@ def main():
     player_three.join(lounge)
     randomCard(lounge,'Lincoln',10)
     randomCard(lounge,'David',10)
+    played=player_three.play(player_three.allCards()[0])
+    print('Played:',played)
     randomCard(lounge,'Sunny',10)
     print(player_one.allCards())
     print(player_two.allCards())
     print(player_three.allCards())
+    #[TODO] Auto Generate
+    lounge.lastCard
+    lounge.currentColour
+    lounge.plusCount
 
 if __name__=='__main__':
     main()

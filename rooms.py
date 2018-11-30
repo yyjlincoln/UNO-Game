@@ -12,6 +12,8 @@ class room(object):
         ROOMS[rid]=self
         self.cards={}
         self.lastCard=None
+        self.currentColour=None
+        self.plusCount=0
         self.rid=rid
         self.cards_not_used=[x for x in CARDS]
         self.players={}

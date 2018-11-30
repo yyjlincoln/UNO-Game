@@ -32,6 +32,12 @@ class player(object):
                 x.destroy()
         except Exception as e:
             print(e)
+    
+    def play(self,cid):
+        if cid in self.cards:
+            self.cards[cid].play()
+            return cid
+        return False
 
 
 def findPlayerById(playerid):
