@@ -1,5 +1,6 @@
 import definecards
 from defineerrors import *
+import players
 CARDS=definecards.CARDS.copy()
 
 ROOMS={}
@@ -17,9 +18,28 @@ class room(object):
         self.rid=rid
         self.cards_not_used=[x for x in CARDS]
         self.players={}
+        self.winners={}
+        self.nextPlayer={}
+        self.currentPlayer={}
+        self.skipCount=0
+        self.currentNumber=None
     
     def allCards(self):
         return list(self.cards.keys())
+    
+    def winner(self,pid):
+        self.winners[pid]=players.findPlayerById(pid)
+        print(pid,'is the %s Winner!',len(self.winners))
+        if len(self.players)-len(self.winners)==1:
+            print('Game ends!')
+            self.destroy()
+    
+    def destroy(self):
+        for x in self.players:
+            x.quit()
+        for x in self.cards:
+            x.destroy()
+
 
 def findRoomById(roomid):
     if roomid not in ROOMS:

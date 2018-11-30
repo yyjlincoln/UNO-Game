@@ -1,8 +1,10 @@
 import cards
-from cards import card
+from cards import card, analyseCard
 from rooms import room, findRoomById, getRoom
 from players import player, findPlayerById, getPlayer
 from random import randint
+
+SocketBand=('',9777)
 
 def giveCard(whichRoom,whichPlayer,whichCardID):
     return card(whichCardID,whichPlayer,whichRoom)
@@ -27,16 +29,23 @@ def main():
     player_three.join(lounge)
     randomCard(lounge,'Lincoln',10)
     randomCard(lounge,'David',10)
-    played=player_three.play(player_three.allCards()[0])
-    print('Played:',played)
     randomCard(lounge,'Sunny',10)
-    print(player_one.allCards())
-    print(player_two.allCards())
-    print(player_three.allCards())
+    while 'lounge' in globals():
+        for x in lounge.players:
+            print('Now',x.pid,'is playing...')
+            print('You have',len(x.cards),'cards:')
+            print(x.cards)
+            y=x.play(input('>'))
+            while y==False:
+                print('Invalid play, please retry!')
+                y=x.play(input('>'))
+            colour,ctype,number,discription=analyseCard(y)
+
+
     #[TODO] Auto Generate
-    lounge.lastCard
-    lounge.currentColour
-    lounge.plusCount
+    lounge.lastCard = None
+    lounge.currentColour = 'Blue'
+    lounge.plusCount = 0
 
 if __name__=='__main__':
     main()

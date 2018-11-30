@@ -41,6 +41,11 @@ class card(object):  # Given card, in another word, card in use.
     def play(self):
         'User play this card.'
         self.croom.lastCard = self.cid
+        self.croom.currentColour = self.ccolour
+        self.croom.currentNumber=self.cnumber
+        if len(self.cowner.cards)==1:
+            self.cowner.quit()
+            self.croom.winner(self.cownerid)
         self.destroy()
 
 
