@@ -17,7 +17,7 @@ class room(object):
         self.players={}
     
     def allCards(self):
-        return self.cards
+        return list(self.cards.keys())
 
 def findRoomById(roomid):
     if roomid not in ROOMS:

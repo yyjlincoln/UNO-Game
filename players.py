@@ -17,7 +17,7 @@ class player(object):
         PLAYERS[pid]=self
     
     def allCards(self):
-        return self.cards
+        return list(self.cards.keys())
     
     def join(self,room):
         if self.proom!=None:
