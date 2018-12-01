@@ -5,6 +5,7 @@ from definecards import CARDS, COLOURS, TYPES
 from defineerrors import *
 import random
 
+plusCardTrigger=None #plusCardTrigger(number of cards, [cards in object form])
 CARDS_USING = {}
 
 
@@ -27,7 +28,7 @@ class card(object):  # Given card, in another word, card in use.
                 raise PlayerNotInRoomError(
                     'Player pid '+cowner.pid+' is in room rid '+cowner.proom.rid+' but the current room is rid '+croom.rid)
         self.cid = cid
-        self.ccolour, self.ctype, self.cnumber, self.cdiscription = analyseCard(
+        self.ccolour, self.ctype, self.cnumber, self.cdescription = analyseCard(
             cid)
         self.cowner = cowner
         self.cownerid = cowner.pid
@@ -38,9 +39,12 @@ class card(object):  # Given card, in another word, card in use.
     def destroy(self):
         'Destroy'
         self.croom.cards_not_used.append(self.cid)
-        del(self.croom.cards[self.cid])
-        del(self.cowner.cards[self.cid])
-        del(self)
+        try:
+            del(self.croom.cards[self.cid])
+            del(self.cowner.cards[self.cid])
+            del(self)
+        except:
+            pass
 
     def play(self):
         'User play this card.'
@@ -78,9 +82,9 @@ def analyseCard(cid):
     ctype = TYPES[cidsplit[1]]
     if cid not in CARDS:
         raise CardDefineError('Card cid: '+cid+' does not exist.')
-    cnumber = int(cidsplit[2])
-    cdiscription = CARDS[cid]
-    return ccolour, ctype, cnumber, cdiscription
+    cnumber = cidsplit[2]
+    cdescription = CARDS[cid]
+    return ccolour, ctype, cnumber, cdescription
 
 
 def playable(ccard):
@@ -100,6 +104,25 @@ def playable(ccard):
     if currentRoom.currentType == ccard.ctype:
         return True
     return False
+
+def testPlayable(baseColour,baseType,cardList):
+    if len(cardList)>=1:
+        if cardList[0].ccolour=='Any':
+            anyAllowed=True
+        else:
+            anyAllowed=False
+        res=[]
+        for x in cardList:
+            r ,baseColour, baseType = testPlay(baseColour, baseType, x, anyAllowed=anyAllowed)
+            res.append(r)
+        return all(res)
+
+def testPlay(baseColour, baseType, singleCard, anyAllowed=False):
+    if singleCard.ccolour==baseColour:
+        return True, baseColour
+    
+
+
 
 
 def typeCheck(ccard):
@@ -122,20 +145,31 @@ def typeCheck(ccard):
 
 
 def playerSelected(ccard):
-    print('Next player selected.')
+#    print('Next player selected.')
     ccard.croom.skipCount = 0
     pass
 
 
 def checkPlus(ccard):
     if ccard.croom.plusCount > 0 and ccard.ctype != '+4' and ccard.ctype != '+2':
-        randomCard(ccard.croom, ccard.cowner, ccard.croom.plusCount)
+        r=randomCard(ccard.croom, ccard.cowner, ccard.croom.plusCount)
         ccard.croom.plusCount = 0
+        if plusCardTrigger:
+            plusCardTrigger(ccard.croom.plusCount,r)
     # Else no add
 
 
 def pickColour(room):
-    room.currentColour = 'Blue'
+    print('''B\tBlue
+Y\tYellow
+G\tGreen
+R\tRed''')
+    colourinput = input('Input Colour:')
+    a = colourinput in COLOURS
+    while a==False:
+        colourinput = input('Input Colour:')
+        a = colourinput in COLOURS
+    room.currentColour=COLOURS[colourinput]
 
 
 def giveCard(whichRoom, whichPlayer, whichCardID):

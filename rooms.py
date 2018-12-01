@@ -1,6 +1,7 @@
 import definecards
 from defineerrors import *
 import players
+import random
 CARDS=definecards.CARDS.copy()
 
 ROOMS={}
@@ -12,11 +13,11 @@ class room(object):
             raise RoomAlreadyExistError('This rid has already exists.')
         ROOMS[rid]=self
         self.cards={}
-        self.lastCard=None
         self.currentColour=None
         self.plusCount=0
         self.rid=rid
         self.cards_not_used=[x for x in CARDS]
+        self.lastCard=None #self.cards_not_used[random.randint(-1, len(self.cards_not_used)-1)]
         self.players={}
         self.winners={}
         self.currentPlayer=0

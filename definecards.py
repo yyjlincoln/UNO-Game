@@ -3,7 +3,8 @@ COLOURS = {
     'B': 'Blue',
     'G': 'Green',
     'Y': 'Yellow',
-    'A': 'Any'
+    'A': 'Any',
+    'Z': 'SYSTEM'
 }
 
 TYPES = {
@@ -21,7 +22,8 @@ TYPES = {
     'R': 'Reverse',
     'C': 'Colour',
     'P': '+2',
-    'S': '+4'  # SuperPlus
+    'S': '+4',  # SuperPlus
+    'Z': 'SYSTEM'
 }
 
 # Each colour 1*0 2*(1-9) 2*(+2) 2*(Skip) 2*(Reverse)
@@ -135,7 +137,8 @@ CARDS = {  # 'cid':'Description'
     'AC1': 'Colour',
     'AC2': 'Colour',
     'AC3': 'Colour',
-    'AC4': 'Colour'
+    'AC4': 'Colour',
+    'ZZZ': 'SYSTEM'
 }
 
 print(len(CARDS), 'cards defined.')
