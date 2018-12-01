@@ -31,7 +31,7 @@ class room(object):
     def winner(self,pid):
         self.winners[pid]=players.findPlayerById(pid)
         print(pid,'is the %s Winner!'%str(len(self.winners)))
-        if len(self.players)==len(self.winners):
+        if len(self.players)-len(self.winners)==1:
             print('Game ends!')
             self.destroy()
     
@@ -43,12 +43,12 @@ class room(object):
 
     def nextPlayer(self):
         if self.orientation == True:  # Next Player
-            if self.currentPlayer == len(self.playTurn)-1:
+            if self.currentPlayer >= len(self.playTurn)-1:
                 self.currentPlayer = 0
             else:
                 self.currentPlayer += 1
         else:
-            if self.currentPlayer == 0:
+            if self.currentPlayer <= 0:
                 self.currentPlayer = len(self.playTurn)-1
             else:
                 self.currentPlayer -= 1

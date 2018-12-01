@@ -49,6 +49,11 @@ class card(object):  # Given card, in another word, card in use.
             raise InvalidStep('Not playable')
         typeCheck(self)
         checkPlus(self)
+
+        if len(self.cowner.cards) == 1:
+            self.cowner.quit()
+            self.croom.winner(self.cownerid)
+        
         # Apply End
         for x in range(self.croom.skipCount+1):
             # print(self.croom.orientation)
@@ -58,9 +63,6 @@ class card(object):  # Given card, in another word, card in use.
         self.croom.lastCard = self.cid
         self.croom.currentColour = self.ccolour
         self.croom.currentType = self.ctype
-        if len(self.cowner.cards) == 1:
-            self.cowner.quit()
-            self.croom.winner(self.cownerid)
         self.destroy()
 
 
