@@ -44,25 +44,24 @@ class card(object):  # Given card, in another word, card in use.
 
     def play(self):
         'User play this card.'
-        # Apply Card Start
+        # Play card
         if not playable(self):
             raise InvalidStep('Not playable')
+        self.croom.lastCard = self.cid
+        self.croom.currentColour = self.ccolour
+        self.croom.currentType = self.ctype
         typeCheck(self)
         checkPlus(self)
-
         if len(self.cowner.cards) == 1:
             self.cowner.quit()
             self.croom.winner(self.cownerid)
-        
-        # Apply End
+        # Play end
+        # Next Player
         for x in range(self.croom.skipCount+1):
             # print(self.croom.orientation)
             self.croom.nextPlayer()
             print(self.croom.currentPlayer)
         playerSelected(self)
-        self.croom.lastCard = self.cid
-        self.croom.currentColour = self.ccolour
-        self.croom.currentType = self.ctype
         self.destroy()
 
 
@@ -136,8 +135,7 @@ def checkPlus(ccard):
 
 
 def pickColour(room):
-    room.currentColour='Blue'
-    pass
+    room.currentColour = 'Blue'
 
 
 def giveCard(whichRoom, whichPlayer, whichCardID):

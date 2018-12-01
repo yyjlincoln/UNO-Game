@@ -27,3 +27,6 @@ class CardInUseError(Exception):
 
 class InvalidStep(Exception):
     pass
+
+class GameCompleted(Exception):
+    pass

@@ -3,6 +3,7 @@ from cards import card, analyseCard, giveCard, randomCard
 from rooms import room, findRoomById, getRoom
 from players import player, findPlayerById, getPlayer
 from random import randint
+from defineerrors import *
 
 SocketBand = ('', 9777)
 
@@ -51,8 +52,9 @@ def main():
             if i!='w':
                 colour, ctype, number, discription = analyseCard(y)
                 print(colour, discription)
-    except NameError:
+    except GameCompleted:
         print('Game Ended')
+
 
     # [TODO] Auto Generate
 

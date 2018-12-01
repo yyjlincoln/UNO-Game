@@ -31,15 +31,19 @@ class room(object):
     def winner(self,pid):
         self.winners[pid]=players.findPlayerById(pid)
         print(pid,'is the %s Winner!'%str(len(self.winners)))
-        if len(self.players)-len(self.winners)==1:
+        if len(self.players)<=1:
             print('Game ends!')
             self.destroy()
     
     def destroy(self):
-        for x in self.players:
-            self.players[x].quit()
+        s=self.players.copy()
+        for x in s:
+            s[x].quit()
+        del(s)
         for x in self.cards:
             self.cards[x].destroy()
+        del(self)
+        raise GameCompleted
 
     def nextPlayer(self):
         if self.orientation == True:  # Next Player
