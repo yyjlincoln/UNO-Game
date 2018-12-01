@@ -30,16 +30,28 @@ class room(object):
     
     def winner(self,pid):
         self.winners[pid]=players.findPlayerById(pid)
-        print(pid,'is the %s Winner!',len(self.winners))
-        if len(self.players)-len(self.winners)==1:
+        print(pid,'is the %s Winner!'%str(len(self.winners)))
+        if len(self.players)==len(self.winners):
             print('Game ends!')
             self.destroy()
     
     def destroy(self):
         for x in self.players:
-            x.quit()
+            self.players[x].quit()
         for x in self.cards:
-            x.destroy()
+            self.cards[x].destroy()
+
+    def nextPlayer(self):
+        if self.orientation == True:  # Next Player
+            if self.currentPlayer == len(self.playTurn)-1:
+                self.currentPlayer = 0
+            else:
+                self.currentPlayer += 1
+        else:
+            if self.currentPlayer == 0:
+                self.currentPlayer = len(self.playTurn)-1
+            else:
+                self.currentPlayer -= 1
 
 
 def findRoomById(roomid):

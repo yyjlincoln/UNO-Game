@@ -52,16 +52,7 @@ class card(object):  # Given card, in another word, card in use.
         # Apply End
         for x in range(self.croom.skipCount+1):
             # print(self.croom.orientation)
-            if self.croom.orientation == True:  # Next Player
-                if self.croom.currentPlayer == len(self.croom.playTurn)-1:
-                    self.croom.currentPlayer = 0
-                else:
-                    self.croom.currentPlayer += 1
-            else:
-                if self.croom.currentPlayer == 0:
-                    self.croom.currentPlayer = len(self.croom.playTurn)-1
-                else:
-                    self.croom.currentPlayer -= 1
+            self.croom.nextPlayer()
             print(self.croom.currentPlayer)
         playerSelected(self)
         self.croom.lastCard = self.cid
@@ -93,7 +84,7 @@ def analyseCard(cid):
 
 def playable(ccard):
     currentRoom = ccard.croom
-    if ccard.ctype == 'Any':
+    if ccard.ccolour == 'Any':
         return True
     # if currentRoom.plusCount>0 and ccard.ctype!='+2' and ccard.ctype!='+4':
     #     # PlusCount
@@ -115,6 +106,7 @@ def typeCheck(ccard):
         ccard.croom.plusCount += 2
     elif ccard.ctype == '+4':
         ccard.croom.plusCount += 4
+        pickColour(ccard.croom)
     elif ccard.ctype == 'Colour':
         pickColour(ccard.croom)
     elif ccard.ctype == 'Reverse':
@@ -142,6 +134,7 @@ def checkPlus(ccard):
 
 
 def pickColour(room):
+    room.currentColour='Blue'
     pass
 
 

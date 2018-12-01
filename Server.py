@@ -17,8 +17,8 @@ def main():
     player_two.join(lounge)
     player_three.join(lounge)
     randomCard(lounge,'Lincoln',3)
-    randomCard(lounge,'David',10)
-    randomCard(lounge,'Sunny',10)
+    randomCard(lounge,'David',3)
+    randomCard(lounge,'Sunny',3)
     lounge.lastCard = None
     lounge.currentColour = 'Blue'
     lounge.plusCount = 0
@@ -44,6 +44,10 @@ def main():
                 if i=='i':
                     randomCard(lounge,x,1)
                     y=False
+                    continue
+                if i=='w':
+                    x.quit()
+                    lounge.winner(x.pid)
                     continue
             colour,ctype,number,discription=analyseCard(y)
             print(colour,discription)

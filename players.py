@@ -27,13 +27,12 @@ class player(object):
         room.playTurn=list(room.players.keys())
     
     def quit(self):
-        try:
-            self.proom.playTurn.remove(self.pid)
-            del(self.proom.players[self.pid])
-            for x in self.cards:
-                x.destroy()
-        except Exception as e:
-            print(e)
+        self.proom.playTurn.remove(self.pid)
+        del(self.proom.players[self.pid])
+        s=self.cards.copy()
+        for x in s:
+            s[x].destroy()
+        del(s)
     
     def play(self,cid):
         if cid in self.cards:
