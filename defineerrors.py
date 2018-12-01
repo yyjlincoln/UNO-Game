@@ -24,3 +24,6 @@ class CardDefineError(Exception):
 class CardInUseError(Exception):
     # This card is already in use.
     pass
+
+class InvalidStep(Exception):
+    pass

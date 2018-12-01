@@ -17,17 +17,17 @@ TYPES = {
     '8': '8',
     '9': '9',
     '0': '0',
-    'B': 'Block',
+    'B': 'Skip',
     'R': 'Reverse',
     'C': 'Colour',
     'P': '+2',
     'S': '+4'  # SuperPlus
 }
 
-# Each colour 1*0 2*(1-9) 2*(+2) 2*(Block) 2*(Reverse)
+# Each colour 1*0 2*(1-9) 2*(+2) 2*(Skip) 2*(Reverse)
 # Plus 4*Colour 4*(+4)
 
-CARDS = {  # 'cid':'DisplayName'
+CARDS = {  # 'cid':'Description'
     'R01': '0',
     'R11': '1',
     'R12': '1',
@@ -47,8 +47,8 @@ CARDS = {  # 'cid':'DisplayName'
     'R82': '8',
     'R91': '9',
     'R92': '9',
-    'RB1': 'Block',
-    'RB2': 'Block',
+    'RB1': 'Skip',
+    'RB2': 'Skip',
     'RR1': 'Reverse',
     'RR2': 'Reverse',
     'B01': '0',
@@ -70,8 +70,8 @@ CARDS = {  # 'cid':'DisplayName'
     'B82': '8',
     'B91': '9',
     'B92': '9',
-    'BB1': 'Block',
-    'BB2': 'Block',
+    'BB1': 'Skip',
+    'BB2': 'Skip',
     'BR1': 'Reverse',
     'BR2': 'Reverse',
     'Y01': '0',
@@ -93,8 +93,8 @@ CARDS = {  # 'cid':'DisplayName'
     'Y82': '8',
     'Y91': '9',
     'Y92': '9',
-    'YB1': 'Block',
-    'YB2': 'Block',
+    'YB1': 'Skip',
+    'YB2': 'Skip',
     'YR1': 'Reverse',
     'YR2': 'Reverse',
     'G01': '0',
@@ -116,8 +116,8 @@ CARDS = {  # 'cid':'DisplayName'
     'G82': '8',
     'G91': '9',
     'G92': '9',
-    'GB1': 'Block',
-    'GB2': 'Block',
+    'GB1': 'Skip',
+    'GB2': 'Skip',
     'GR1': 'Reverse',
     'GR2': 'Reverse',
     'BP1': '+2',

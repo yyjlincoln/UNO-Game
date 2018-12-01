@@ -19,10 +19,11 @@ class room(object):
         self.cards_not_used=[x for x in CARDS]
         self.players={}
         self.winners={}
-        self.nextPlayer={}
-        self.currentPlayer={}
+        self.currentPlayer=0
         self.skipCount=0
         self.currentType=None
+        self.orientation=True #Clockwise
+        self.playTurn=[]
     
     def allCards(self):
         return list(self.cards.keys())

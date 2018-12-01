@@ -3,6 +3,7 @@ import rooms
 import players
 from definecards import CARDS, COLOURS, TYPES
 from defineerrors import *
+import random
 
 CARDS_USING = {}
 
@@ -17,14 +18,17 @@ class card(object):  # Given card, in another word, card in use.
             raise CardInUseError('Card cid: '+cid+' already in use.')
         else:
             croom.cards[cid] = self
-            cowner.cards[cid]=self
-        if cowner.proom == None or cowner.proom.rid!=croom.rid:
-            if cowner.proom==None:
-                raise PlayerNotInRoomError('Player pid '+cowner.pid+' is not in any rome but the current room is rid '+croom.rid)
-            else:                
-                raise PlayerNotInRoomError('Player pid '+cowner.pid+' is in room rid '+cowner.proom.rid+' but the current room is rid '+croom.rid)
+            cowner.cards[cid] = self
+        if cowner.proom == None or cowner.proom.rid != croom.rid:
+            if cowner.proom == None:
+                raise PlayerNotInRoomError(
+                    'Player pid '+cowner.pid+' is not in any rome but the current room is rid '+croom.rid)
+            else:
+                raise PlayerNotInRoomError(
+                    'Player pid '+cowner.pid+' is in room rid '+cowner.proom.rid+' but the current room is rid '+croom.rid)
         self.cid = cid
-        self.ccolour, self.ctype, self.cnumber, self.cdiscription = analyseCard(cid)
+        self.ccolour, self.ctype, self.cnumber, self.cdiscription = analyseCard(
+            cid)
         self.cowner = cowner
         self.cownerid = cowner.pid
         self.croomid = croomid
@@ -40,10 +44,30 @@ class card(object):  # Given card, in another word, card in use.
 
     def play(self):
         'User play this card.'
+        # Apply Card Start
+        if not playable(self):
+            raise InvalidStep('Not playable')
+        typeCheck(self)
+        checkPlus(self)
+        # Apply End
+        for x in range(self.croom.skipCount+1):
+            # print(self.croom.orientation)
+            if self.croom.orientation == True:  # Next Player
+                if self.croom.currentPlayer == len(self.croom.playTurn)-1:
+                    self.croom.currentPlayer = 0
+                else:
+                    self.croom.currentPlayer += 1
+            else:
+                if self.croom.currentPlayer == 0:
+                    self.croom.currentPlayer = len(self.croom.playTurn)-1
+                else:
+                    self.croom.currentPlayer -= 1
+            print(self.croom.currentPlayer)
+        playerSelected(self)
         self.croom.lastCard = self.cid
         self.croom.currentColour = self.ccolour
-        self.croom.currentType=self.ctype
-        if len(self.cowner.cards)==1:
+        self.croom.currentType = self.ctype
+        if len(self.cowner.cards) == 1:
             self.cowner.quit()
             self.croom.winner(self.cownerid)
         self.destroy()
@@ -65,5 +89,75 @@ def analyseCard(cid):
     cnumber = int(cidsplit[2])
     cdiscription = CARDS[cid]
     return ccolour, ctype, cnumber, cdiscription
+
+
+def playable(ccard):
+    currentRoom = ccard.croom
+    if ccard.ctype == 'Any':
+        return True
+    # if currentRoom.plusCount>0 and ccard.ctype!='+2' and ccard.ctype!='+4':
+    #     # PlusCount
+    #     return False
+    if currentRoom.skipCount > 0:
+        return False
+    # if currentRoom.players[currentRoom.playTurn[currentRoom.currentPlayer]]!=ccard.cowner:
+
+    #     return False
+    if currentRoom.currentColour == ccard.ccolour:
+        return True
+    if currentRoom.currentType == ccard.ctype:
+        return True
+    return False
+
+
+def typeCheck(ccard):
+    if ccard.ctype == '+2':
+        ccard.croom.plusCount += 2
+    elif ccard.ctype == '+4':
+        ccard.croom.plusCount += 4
+    elif ccard.ctype == 'Colour':
+        pickColour(ccard.croom)
+    elif ccard.ctype == 'Reverse':
+        # print('REVERSE')
+        if ccard.croom.orientation == False:
+            ccard.croom.orientation = True
+        else:
+            ccard.croom.orientation = False
+        # print(ccard.croom.orientation)
+    elif ccard.ctype == 'Skip':
+        ccard.croom.skipCount += 1
+
+
+def playerSelected(ccard):
+    print('Next player selected.')
+    ccard.croom.skipCount = 0
+    pass
+
+
+def checkPlus(ccard):
+    if ccard.croom.plusCount > 0 and ccard.ctype != '+4' and ccard.ctype != '+2':
+        randomCard(ccard.croom, ccard.cowner, ccard.croom.plusCount)
+        ccard.croom.plusCount = 0
+    # Else no add
+
+
+def pickColour(room):
+    pass
+
+
+def giveCard(whichRoom, whichPlayer, whichCardID):
+    return card(whichCardID, whichPlayer, whichRoom)
+
+
+def randomCard(whichRoom, whichPlayer, howMuch):
+    if len(whichRoom.cards_not_used) < howMuch:
+        howMuch = len(whichRoom.cards_not_used)
+        print('Not enough cards')
+    reply = []
+    for x in range(howMuch):
+        ran = random.randint(-1, len(whichRoom.cards_not_used)-1)
+        reply.append(giveCard(whichRoom, whichPlayer,
+                              whichRoom.cards_not_used[ran]))
+    return reply
 
 # 具体思路: 未发卡没有定义object,已出卡del(object),已发卡创建object并修改owner属性

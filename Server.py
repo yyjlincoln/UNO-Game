@@ -1,23 +1,12 @@
 import cards
-from cards import card, analyseCard
+from cards import card, analyseCard, giveCard, randomCard
 from rooms import room, findRoomById, getRoom
 from players import player, findPlayerById, getPlayer
 from random import randint
 
 SocketBand=('',9777)
 
-def giveCard(whichRoom,whichPlayer,whichCardID):
-    return card(whichCardID,whichPlayer,whichRoom)
 
-def randomCard(whichRoom,whichPlayer,howMuch):
-    if len(whichRoom.cards_not_used)<howMuch:
-        howMuch=len(whichRoom.cards_not_used)
-        print('Not enough cards')
-    reply=[]
-    for x in range(howMuch):
-        ran=randint(-1,len(whichRoom.cards_not_used)-1)
-        reply.append(giveCard(whichRoom,whichPlayer,whichRoom.cards_not_used[ran]))
-    return reply
 
 def main():
     lounge=room('lounge')
@@ -35,17 +24,29 @@ def main():
     lounge.plusCount = 0
     try:
         while lounge:
-            for x in lounge.players:
-                x=lounge.players[x]
-                print('Now',x.pid,'is playing...')
+            x=lounge.playTurn[lounge.currentPlayer]
+            x=lounge.players[x]
+            print('Now',x.pid,'is playing...')
+            print('You have',len(x.allCards()),'cards:')
+            print(x.allCards())
+            i=input('>')
+            if i=='i':
+                randomCard(lounge,x,1)
+                y=False
+            else:
+                y=x.play(i)
+            while y==False:
+                print('Retry:')
                 print('You have',len(x.allCards()),'cards:')
                 print(x.allCards())
-                y=x.play(input('>'))
-                while y==False:
-                    print('Invalid play, please retry!')
-                    y=x.play(input('>'))
-                colour,ctype,number,discription=analyseCard(y)
-                print(colour,discription)
+                i=input('>')
+                y=x.play(i)
+                if i=='i':
+                    randomCard(lounge,x,1)
+                    y=False
+                    continue
+            colour,ctype,number,discription=analyseCard(y)
+            print(colour,discription)
     except NameError:
         print('Game Ended')
 

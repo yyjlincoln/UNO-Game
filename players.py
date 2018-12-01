@@ -24,9 +24,11 @@ class player(object):
             self.quit()
         room=self.proom=rooms.getRoom(room)
         room.players[self.pid]=self
+        room.playTurn=list(room.players.keys())
     
     def quit(self):
         try:
+            self.proom.playTurn.remove(self.pid)
             del(self.proom.players[self.pid])
             for x in self.cards:
                 x.destroy()
@@ -35,9 +37,12 @@ class player(object):
     
     def play(self,cid):
         if cid in self.cards:
-            if self.proom.currentColour=='Any' or self.proom.currentColour==self.cards[cid].ccolour or self.proom.currentType==self.cards[cid].ctype:
+            # if self.proom.currentColour=='Any' or self.proom.currentColour==self.cards[cid].ccolour or self.proom.currentType==self.cards[cid].ctype:
+            try:
                 self.cards[cid].play()
-                return cid
+            except InvalidStep:
+                return False
+            return cid
             # print(self.proom.currentColour,self.cards[cid].ccolour)
             
         return False
