@@ -1,5 +1,6 @@
 import rooms
 from defineerrors import *
+import cards
 
 PLAYERS = {}
 
@@ -37,8 +38,39 @@ class player(object):
             s[x].destroy()
         del(s)
         self.proom.nextPlayer()
+    
+    def play(self,cidlist):
+        if len(cidlist)>=1:
+            ct=self.proom.cards[cidlist[0]].ctype
+        for x in cidlist:
+            if self.proom.cards[x].ctype != ct:
+                return False
+        try:
+            played=[]
+            prevp=self.proom.plusCount
+            prevs=self.proom.skipCount
+            for x in cidlist:
+                r=self.xplay(x)
+                if r==False:
+                    for y in played:
+                        cards.giveCard(self.proom,self,y)
+                    self.proom.plusCount=prevp
+                    self.proom.skipCount=prevs
+                    return False
+                    break
+            for x in range(self.proom.skipCount+1):
+                print(self.proom.skipCount)
+                print(self.proom.currentPlayer)
+            # print(self.croom.orientation)
+                self.proom.nextPlayer()
+                print(self.proom.currentPlayer)
+            return True
+        except Exception as e:
+            print(e)
+            return False
 
-    def play(self, cid):
+
+    def xplay(self, cid):
         if cid in self.cards:
             # if self.proom.currentColour=='Any' or self.proom.currentColour==self.cards[cid].ccolour or self.proom.currentType==self.cards[cid].ctype:
             try:

@@ -28,8 +28,6 @@ def main():
     import os
     try:
         while lounge:
-            x = lounge.playTurn[lounge.currentPlayer]
-            x = lounge.players[x]
             y=False
             p=False
             alreadyM=False
@@ -37,6 +35,11 @@ def main():
             Tip='Press . for more card.'
             chosen=[]
             while y == False:
+                try:
+                    x = lounge.playTurn[lounge.currentPlayer]
+                    x = lounge.players[x]
+                except:
+                    raise GameCompleted
                 os.system('cls')
                 print('Now', x.pid, 'is playing...')
                 lasta=analyseCard(lounge.lastCard)
@@ -58,21 +61,13 @@ def main():
                     if len(chosen)==0:
                         Tip='Please choose at least 1 card or press . for more card.'
                         unable=True
-                    played=[]
-                    for z in chosen:
-                        y = x.play(z)
-                        if y==False:
-                            for l in played:
-                                giveCard(lounge,x,l)
-                            Tip='Unable to play those cards. Please try again.'
-                            unable=True
-                            chosen=[]
-                            y=False
-                            break
-                        played.append(z)
-                    if type(y)!=bool:
-                        colour, ctype, number, description = analyseCard(y)
-                        # print(colour, description,'was played.')
+                    if not x.play(chosen):
+                        Tip='Unable to play those cards. Please try other cards.'
+                        unable=True
+                        chosen=[]
+                    else:
+                        chosen=[]
+                        continue
                 if i == '.':
                     if alreadyM:
                         Syst=card('ZZZ',x,lounge)

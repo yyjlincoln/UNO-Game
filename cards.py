@@ -60,12 +60,7 @@ class card(object):  # Given card, in another word, card in use.
             self.cowner.quit()
             self.croom.winner(self.cownerid)
         # Play end
-        # Next Player
-        for x in range(self.croom.skipCount+1):
-            # print(self.croom.orientation)
-            self.croom.nextPlayer()
-            print(self.croom.currentPlayer)
-        playerSelected(self)
+        # playerSelected(self)
         self.destroy()
 
 

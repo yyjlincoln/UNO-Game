@@ -47,6 +47,7 @@ class room(object):
         raise GameCompleted
 
     def nextPlayer(self):
+        # print('NextPlayer')
         if self.orientation == True:  # Next Player
             if self.currentPlayer >= len(self.playTurn)-1:
                 self.currentPlayer = 0
