@@ -147,12 +147,14 @@ def playerSelected(ccard):
 
 def checkPlus(ccard):
     if ccard.croom.plusCount > 0 and ccard.ctype != '+4' and ccard.ctype != '+2':
-        r=randomCard(ccard.croom, ccard.cowner, ccard.croom.plusCount)
-        ccard.croom.plusCount = 0
-        if plusCardTrigger:
-            plusCardTrigger(ccard.croom.plusCount,r)
+        applyPlus(ccard.croom,ccard.cowner)
     # Else no add
 
+def applyPlus(croom,cwho):
+    r=randomCard(croom, cwho, croom.plusCount)
+    croom.plusCount = 0
+    if plusCardTrigger:
+        plusCardTrigger(croom.plusCount,r)
 
 def pickColour(room):
     print('''B\tBlue
