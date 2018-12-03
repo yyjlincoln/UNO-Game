@@ -12,13 +12,13 @@ def main():
     lounge = room('lounge')
     player_one = player('Lincoln')
     player_two = player('Sunny')
-    player_three = player('David')
+    # player_three = player('David')
     player_one.join(lounge)
     player_two.join(lounge)
-    player_three.join(lounge)
-    randomCard(lounge, 'Lincoln', 3)
-    randomCard(lounge, 'David', 3)
-    randomCard(lounge, 'Sunny', 3)
+    # player_three.join(lounge)
+    randomCard(lounge, 'Lincoln', 7)
+    # randomCard(lounge, 'David', 3)
+    randomCard(lounge, 'Sunny', 7)
     lounge.lastCard = lounge.cards_not_used[randint(
         -1, len(lounge.cards_not_used)-1)]
     while analyseCard(lounge.lastCard)[1] == '+2' or analyseCard(lounge.lastCard)[1] == '+4' or analyseCard(lounge.lastCard)[1] == 'Reverse' or analyseCard(lounge.lastCard)[1] == 'Skip':
@@ -82,6 +82,7 @@ def main():
                     if len(chosen) == 0:
                         Tip = 'Please choose at least 1 card or press . for more card.'
                         unable = True
+                        continue
                     if not x.play(chosen):
                         Tip = 'Unable to play those cards. Please try other cards.'
                         unable = True

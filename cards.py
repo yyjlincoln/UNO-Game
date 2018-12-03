@@ -89,8 +89,8 @@ def playable(ccard):
     # if currentRoom.plusCount>0 and ccard.ctype!='+2' and ccard.ctype!='+4':
     #     # PlusCount
     #     return False
-    if currentRoom.skipCount > 0:
-        return False
+    # if currentRoom.skipCount > 0:
+    #     return False
     # if currentRoom.players[currentRoom.playTurn[currentRoom.currentPlayer]]!=ccard.cowner:
 
     #     return False
